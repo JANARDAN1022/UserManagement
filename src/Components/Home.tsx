@@ -33,7 +33,7 @@ async()=>{
     setFetching(false);
   } catch (error) {
     setFetching(false);
-    Navigate('/Login');
+    Navigate('/auth');
   }
   
 },[]);
@@ -47,7 +47,7 @@ useEffect(()=>{
     setFetching(true);
     await account.deleteSession('current');
    await dispatch(LogoutUser());
-   Navigate('/Login');
+   Navigate('/auth');
    setFetching(false); 
    }
   }

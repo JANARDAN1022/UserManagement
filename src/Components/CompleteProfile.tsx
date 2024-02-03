@@ -66,7 +66,7 @@ const CompleteProfile = () => {
           setFetching(false);
         } catch (error) {
           setFetching(false);
-          Navigate('/Login');
+          Navigate('/auth');
         }
         
       },[]);
