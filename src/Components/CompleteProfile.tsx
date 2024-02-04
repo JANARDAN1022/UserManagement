@@ -200,19 +200,21 @@ const CompleteProfile = () => {
             <div className="w-28 h-20 rounded-full bg-black" />
             }
           <input
+          disabled={Loading?true:false}
             type="file"
             name="ProfileIMG"
             id="ProfileIMG"
             accept="image/*" // Only allow image files
             onChange={handlePhotoChange} // Call handleFileChange when a file is selected  
             className="py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-
+            autoComplete="off"
           />
         </div>
 
                 <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
             <input
+             disabled={Loading?true:false}
               type="text"
               name="firstName"
               id="firstName"
@@ -221,6 +223,7 @@ const CompleteProfile = () => {
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
+               autoComplete="off"
             />
             <label
               htmlFor="firstName"
@@ -231,6 +234,7 @@ const CompleteProfile = () => {
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <input
+             disabled={Loading?true:false}
               type="text"
               name="lastName"
               id="lastName"
@@ -239,6 +243,7 @@ const CompleteProfile = () => {
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
+               autoComplete="off"
             />
             <label
               htmlFor="lastName"
@@ -251,6 +256,7 @@ const CompleteProfile = () => {
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
             <input
+             disabled={Loading?true:false}
               type="tel"
               pattern="[0-9]{10}"
               name="phone"
@@ -260,6 +266,8 @@ const CompleteProfile = () => {
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
+               autoComplete="off"
+             
             />
             <label
               htmlFor="phone"
@@ -270,12 +278,14 @@ const CompleteProfile = () => {
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <select
+             disabled={Loading?true:false}
               name="gender"
               id="gender"
               value={formData.gender}
               onChange={handleChange}
               className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               required
+               autoComplete="off"
             >
                 <option className="bg-black text-white" value={''}>Your Gender</option>
                 <option className="bg-black text-white" value={'Male'}>Male</option>
@@ -293,6 +303,7 @@ const CompleteProfile = () => {
         <div className="relative">
           
         <button
+         disabled={Loading?true:false}
           type="submit"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
@@ -323,7 +334,11 @@ const CompleteProfile = () => {
 
         </div>
 
-<span onClick={()=>Navigate('/')} className={`text-white cursor-pointer w-full ${User && User.gender!=='' && User.phone!==''?'':'hidden'}`}>Changed Your Mind <span className="text-blue-500 opacity-80 hover:opacity-100 transition-all ease-in-out underline">Go Back?</span></span>
+<span  onClick={()=>{
+  if(!Loading){
+  Navigate('/')
+  }
+  }} className={`text-white cursor-pointer w-full ${User && User.gender!=='' && User.phone!==''?'':'hidden'}`}>Changed Your Mind <span className="text-blue-500 opacity-80 hover:opacity-100 transition-all ease-in-out underline">Go Back?</span></span>
       </form>
       
     :

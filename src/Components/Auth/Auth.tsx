@@ -35,7 +35,7 @@ const ValidateEmail = EmailSymbol?.split('.').length===2;
 
 
 
-if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail){
+if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail && AuthInfo.password.length>=8){
   if(AuthInfo.password===AuthInfo.confirmPassword){
     try {
       setLoading(true)
@@ -77,7 +77,17 @@ if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail){
     } 
        setLoading(false);
     } catch (error:any) {
+      let Message:string = error.message?error.message:'';
+      if(Message==='Invalid credentials. Please check the email and password.'){
+      setAuthErrors({...AuthErrors,password:Message,email:Message,confirmPassword:Message});
       setLoading(false);
+      setTimeout(() => {
+        setAuthErrors({...AuthErrors,password:'',email:'',confirmPassword:''});
+      }, 3000);
+    }else{
+      console.log(error);
+    }
+    
     }
       }else{
   setAuthErrors({...AuthErrors,confirmPassword:'Passwords Do Not Match*'});
@@ -104,6 +114,11 @@ if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail){
    }
    else if(AuthInfo.password===''){
     setAuthErrors({...AuthErrors,password:'This field cannot be empty*'}); 
+    setTimeout(() => {
+      setAuthErrors({...AuthErrors,password:''});
+    }, 3000);
+   }else if(AuthInfo.password.length<8){
+    setAuthErrors({...AuthErrors,password:'Length of Password Cannot Be Less Than 8*'}); 
     setTimeout(() => {
       setAuthErrors({...AuthErrors,password:''});
     }, 3000);
@@ -138,7 +153,7 @@ if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail){
         className="peer-focus:font-medium flex gap-4 absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
       >
         First Name
-        <span className="text-red-500">{AuthErrors.Name!=='' && AuthErrors.Name} </span>
+        <span className="text-red-500 min-w-max">{AuthErrors.Name!=='' && AuthErrors.Name} </span>
       
       </label>
     </div>
@@ -162,9 +177,9 @@ if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail){
         htmlFor="floating_email"
         className="peer-focus:font-medium flex gap-2  absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
       >
-        Email address
+       <span className="min-w-max"> Email address</span>
 
-       <span className="text-red-500">{AuthErrors.email!=='' && AuthErrors.email} </span>
+       <span className="text-red-500 min-w-max">{AuthErrors.email!=='' && AuthErrors.email} </span>
       
       </label>
     </div>
@@ -207,8 +222,8 @@ if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail){
         htmlFor="floating_repeat_password"
         className="peer-focus:font-medium flex gap-4 absolute text-sm text-white dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
       >
-        Confirm password
-        <span className="text-red-500">{AuthErrors.confirmPassword!=='' && AuthErrors.confirmPassword} </span>
+       <span className="min-w-max"> Confirm password </span>
+        <span className="text-red-500 min-w-max">{AuthErrors.confirmPassword!=='' && AuthErrors.confirmPassword} </span>
      
       </label>
     </div>
@@ -256,7 +271,7 @@ if(AuthInfo.email!=='' && AuthInfo.password!=='' && ValidateEmail){
   </div>
   </form>
   
-<button className="text-white flex items-center gap-1" onClick={()=>{
+<button disabled={Loading?true:false} className="text-white flex items-center gap-1" onClick={()=>{
   if(CurrentForm==='Login'){
     setAuthInfo({...AuthInfo,confirmPassword:'',password:''});
   setCurrentForm('Register')
